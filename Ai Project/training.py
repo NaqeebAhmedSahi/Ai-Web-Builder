@@ -5,23 +5,28 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 from sklearn.model_selection import train_test_split  # Import train_test_split
-
+# nltk.download('punkt')
 # nltk.download('wordnet')
+# nltk.download('punkt_tab')
 import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import SGD
 
 lemmatizer = WordNetLemmatizer()
-intents = json.loads(open("intense.json").read())
-
+intents = json.loads(open("1.json", encoding='utf-8').read())
+print(json.dumps(intents, indent=4, ensure_ascii=False)) 
 words = []
 classes = []
 documents = []
 ignore_letters = ['?', ',', '.', '!']
-
+count=0
 for intent in intents["intents"]:
+    count+=1
+    print(count)
     for pattern in intent["pattern"]:
+        
+        
         wordList = nltk.word_tokenize(pattern)
         words.extend(wordList)
         documents.append((wordList, intent["tag"]))
@@ -80,7 +85,7 @@ model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(len(train_Y[0]), activation='softmax'))
 
-sgd = tf.keras.optimizers.legacy.SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+sgd = tf.keras.optimizers.SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 

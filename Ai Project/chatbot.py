@@ -12,8 +12,7 @@ import re
 
 
 
-lemmatizer = WordNetLemmatizer()
-intents = json.loads(open("intense.json").read())
+intents = json.loads(open("1.json", encoding='utf-8').read())
 
 words = pickle.load(open("words.pkl", 'rb'))
 classes = pickle.load(open("classes.pkl", 'rb'))
